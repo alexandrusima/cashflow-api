@@ -1,0 +1,5 @@
+users:
+    resource: "@UsersBundle/Resources/config/routing.yml"
+    prefix:   /
+    schemes: ['https']
+

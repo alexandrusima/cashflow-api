@@ -1,0 +1,3 @@
+access_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: AccessBundle:Default:index }

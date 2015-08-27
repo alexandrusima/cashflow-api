@@ -1,0 +1,65 @@
+#################
+# CashFlow 1.1
+#################
+
+# I)   What are applications specifics?
+# II)  For whom is the app useful?
+# III) Care sunt beneficiile flosirii acestei aplicatii?
+# IV)  Cum se v-a achita de sarcini proiectul?
+# V)   Fiind vorba de bani, cum vor fi securizate datele in aplicatie?
+# VI)  How do you monytize the application? Which application specifics will bring cashflow from the application?
+
+/**region I) What are applications specifics?
+-------------------------------------
+    
+    The app will be useful in keeping track of incomes and expenses.
+ 
+    The app will build, on demand or at the end of the month, statistics of incomes and expenses for a given period of time.
+    
+    The app will keep track of recurent expenses.
+    
+    The App will keep track of incomes, both recurent ( salary, dividends, etc. ) and non-recurent.
+    
+    The app will keep track of all active and pasive belonging the the user.
+
+    The app will keep track and will compute, at user's choice, the financials todo.
+    
+    The application will sync with one or more "@todo" tools like: evernote, wunderlist, etc. 
+    
+    The app will use i18n, fist 2 languages will be ennglish and romanian.
+/*endregion*/   
+# II) For whom is the app useful?
+---------------------------------
+
+    The app is designed for all who want to keep track of incomes and expenses.
+    
+    User Roles:
+        - General roles: 
+            - paying 
+            - free
+        - Additional roles:
+            - ADMIN
+            - general ( paying or free ) 
+        
+    Users will have two general roles roles:
+        - paying
+        - free
+    Levels of access for the two user roles:
+    
+        - paying:
+            - able to sync with mobile apps
+            - able to create unlimited of financial todos.
+            - create unlimited number of recurent objects
+            - recurent payments via paypal or bank
+    
+        - free ( + paying ) :
+            - statistics
+            - create limited number of recurent objects ( by objects we are talking about all types: incomes, expenses, budgets, todos, etc. )
+            - create budgets 
+            - tranzactions
+            
+    Additional roles:
+        - ADMIN - this is only used by the website owner to receive info statistics for the app.
+        
+        
+    
