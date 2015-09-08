@@ -4,6 +4,11 @@ parameters:
 #    parameter_name: value
 
 services:
+    apikey_authenticator:
+        class:  AccessBundle\Security\ApiKeyAuthenticator
+        public: false
+    api_key_user_provider:
+        class: AccessBundle\Security\ApiKeyUserProvider
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
