@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
+
 class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface
 {
     public function createToken(Request $request, $providerKey)

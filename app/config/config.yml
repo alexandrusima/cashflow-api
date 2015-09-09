@@ -75,6 +75,8 @@ swiftmailer:
 fos_rest:
     param_fetcher_listener: true
     body_listener: true
+    access_denied_listener: 
+        json: true
     format_listener: true
     view:
         view_response_listener: 'force'
@@ -84,7 +86,7 @@ fos_rest:
         templating_formats:
             html: false
         force_redirects:
-            html: true
+            html: false
         failed_validation: HTTP_BAD_REQUEST
         default_engine: twig
     routing_loader:

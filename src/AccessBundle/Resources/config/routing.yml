@@ -1,3 +1,14 @@
-access_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: AccessBundle:Default:index }
+login:
+    path:     /login.{_format}
+    defaults: { _controller: AccessBundle:Auth:login, _format: json }
+    requirements:
+        _format: json|xml
+        _method: POST
+
+register:
+    path:     /register
+    defaults: { _controller: AccessBundle:Auth:register }
+
+forgot:
+    path:     /forgot
+    defaults: { _controller: AccessBundle:Auth:forgot }

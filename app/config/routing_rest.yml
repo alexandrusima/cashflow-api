@@ -1,3 +1,8 @@
 app_bundle : 
   type : rest
   resource: "@ApiBundle/Resources/config/routing.yml"
+
+access_bundle : 
+  type : rest
+  resource: "@AccessBundle/Resources/config/routing.yml"
+  prefix: /auth

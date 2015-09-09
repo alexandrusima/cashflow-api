@@ -3,6 +3,8 @@
 !app/cache/.gitkeep
 /app/config/parameters.yml
 /app/logs/*
+/log/apache2/project_access.log
+/log/apache2/project_error.log
 !app/logs/.gitkeep
 /app/phpunit.xml
 /bin/
