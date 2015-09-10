@@ -77,7 +77,9 @@ fos_rest:
     body_listener: true
     access_denied_listener: 
         json: true
-    format_listener: true
+    format_listener:
+        rules:
+            - { path: ^/, priorities: [ json, xml ], fallback_format: json, prefer_extension: true }
     view:
         view_response_listener: 'force'
         formats:

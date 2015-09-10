@@ -1,4 +1,3 @@
 rest : 
   type : rest 
   resource : "routing_rest.yml"
-  prefix : /

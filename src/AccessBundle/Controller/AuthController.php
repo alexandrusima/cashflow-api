@@ -6,9 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class AuthController extends Controller
 {
-    public function loginAction($username, $password)
+    public function loginAction()
     {
-        var_dump($username, $password);
+
+        var_dump($this->get('request')->request->all());
         exit;
     }
 
