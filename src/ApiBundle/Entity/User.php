@@ -9,6 +9,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\VirtualProperty;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 
 /**
@@ -18,7 +19,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\UserRepository")
  * @ExclusionPolicy("all") 
  */
-class User
+class User implements UserInterface
 {
     /**
      * @var integer
@@ -297,5 +298,30 @@ class User
         else{
             return $this->getUsername();
         }
-    }   
+    }
+
+    /**
+     * Method inherited from UserInterface
+     * @return [type] [description]
+     */
+    public function getRoles() {
+        return array('ROLE_USER');
+    }
+
+    /**
+     * Method inherited from UserInterface
+     * @return [type] [description]
+     */
+    public function getSalt() {
+
+    }
+
+    /**
+     * Method inherited from UserInterface
+     * @return [type] [description]
+     */
+    public function eraseCredentials()
+    {
+
+    }
 }

@@ -5,25 +5,26 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use ApiBundle\Interfaces\UsersHandlerInterface;
 
 class ApiKeyUserProvider implements UserProviderInterface
 {
+    /**
+     * @var UsersHandlerInterface
+     */
+    private $usersHandler;
+
+    public function __construct(UsersHandlerInterface $usersHandler) {
+        $this->usersHandler = $usersHandler;
+    }
     public function getUsernameForApiKey($apiKey)
     {
-        $username = 'admin';
-
-        return $username;
+        return $this->usersHandler->getUsernameFromApiKey($apiKey);
     }
 
     public function loadUserByUsername($username)
     {
-        return new User(
-            $username,
-            null,
-            // the roles for the user - you may choose to determine
-            // these dynamically somehow based on the user
-            array('ROLE_USER')
-        );
+        return $this->usersHandler->getByUsername($username);
     }
 
     public function refreshUser(UserInterface $user)

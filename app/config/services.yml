@@ -1,14 +1,26 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
-#    parameter_name: value
+   user_entity: ApiBundle\Entity\User
+
 
 services:
+    users_handler:
+        class: ApiBundle\Entity\UserRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - %user_entity%
+
     apikey_authenticator:
         class:  AccessBundle\Security\ApiKeyAuthenticator
         public: false
+
     api_key_user_provider:
         class: AccessBundle\Security\ApiKeyUserProvider
+        arguments: ["@users_handler"]
+
+
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

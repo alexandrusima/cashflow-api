@@ -15,6 +15,8 @@ class AuthController extends Controller
 
     public function registerAction()
     {
+        var_dump($this->get('request')->request->all());
+        exit;
     }
 
     public function forgotAction()
