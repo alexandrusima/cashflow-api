@@ -9,6 +9,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\VirtualProperty;
+use JMS\Serializer\Annotation\AccessorOrder;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
@@ -22,17 +23,19 @@ use Symfony\Component\Security\Core\Encoder\BasePasswordEncoder;
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ExclusionPolicy("all")
+ * @AccessorOrder("custom", custom = {"id","first_name", "last_name", "full_name", "roles", "apikeys"})
  */
 class User implements UserInterface, EncoderAwareInterface
 {
      /**
-     * @ORM\OneToMany(targetEntity="AccessBundle\Entity\ApiKey", mappedBy="userId", cascade={"remove", "persist"})
+     * @ORM\OneToMany(targetEntity="AccessBundle\Entity\ApiKey", mappedBy="user", cascade={"remove", "persist"})
      * @Expose
+     * @Groups({"me"})
      */
-    protected $apiKeys;
+    protected $apikeys;
     
     public function __construct() {
-        $this->apiKeys = new ArrayCollection();
+        $this->apikeys = new ArrayCollection();
     }
     
     
@@ -42,6 +45,8 @@ class User implements UserInterface, EncoderAwareInterface
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose
+     * @Groups({"me"})
      */
     private $id;
 
@@ -50,6 +55,7 @@ class User implements UserInterface, EncoderAwareInterface
      * 
      * @ORM\Column(name="firstName", type="string", length=100)
      * @Expose
+     * @Groups({"me", "list"})
      */
     private $firstName;
 
@@ -58,6 +64,7 @@ class User implements UserInterface, EncoderAwareInterface
      *
      * @ORM\Column(name="lastName", type="string", length=100)
      * @Expose
+     * @Groups({"me", "list"})
      */
     private $lastName;
 
@@ -66,6 +73,7 @@ class User implements UserInterface, EncoderAwareInterface
      *
      * @ORM\Column(name="username", type="string", length=50)
      * @Expose
+     * @Groups({"me", "list"})
      */
     private $username;
 
@@ -73,6 +81,7 @@ class User implements UserInterface, EncoderAwareInterface
      * @var \DateTime
      * @ORM\Column(name="lastLogin", type="datetimetz", nullable=true)
      * @Expose
+     * @Groups({"me"})
      */
     private $lastLogin;
 
@@ -321,7 +330,8 @@ class User implements UserInterface, EncoderAwareInterface
      * 
      * @param $separator: the separator between name and firstname (default: ' ')
      * @return String
-     * @VirtualProperty 
+     * @VirtualProperty
+     * @Groups({"me", "list"})
      */
     public function getFullName($separator = ' '){
         if($this->getLastName()!=null && $this->getFirstName()!=null){
@@ -336,6 +346,7 @@ class User implements UserInterface, EncoderAwareInterface
      * Method inherited from UserInterface
      * @return [type] [description]
      * @VirtualProperty
+     * @Groups({"me"})
      */
     public function getRoles() {
         return array('ROLE_USER', 'FREE_USER');
@@ -398,13 +409,13 @@ class User implements UserInterface, EncoderAwareInterface
 
     /**
      *
-     * @param \AccessBundle\Entity\ApiKey $apiKeys
+     * @param \AccessBundle\Entity\ApiKey $apikey
      * @return User
      */
     public function addApiKey(\AccessBundle\Entity\ApiKey $apiKey)
     {
-        $this->apiKeys[] = $apiKey;
-
+        $apiKey->setUser($this);
+        $this->apikeys[] = $apiKey;
         return $this;
     }
 
@@ -415,16 +426,16 @@ class User implements UserInterface, EncoderAwareInterface
      */
     public function removeApiKey(\AccessBundle\Entity\ApiKey $apiKey)
     {
-        $this->apiKeys->removeElement($apiKey);
+        $this->apikeys->removeElement($apiKey);
     }
 
     /**
-     * Get apiKeys
+     * Get apikeys
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
     public function getApiKeys()
     {
-        return $this->apiKeys;
+        return $this->apikeys;
     }
 }

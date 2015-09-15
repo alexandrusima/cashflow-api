@@ -3,9 +3,15 @@
 namespace ApiBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
 class UserController extends Controller
 {
+    /**
+     * @Rest\View(serializerGroups={"list"})
+     * @param  [type] $username [description]
+     * @return [type]           [description]
+     */
     public function getAction($username)
     {
         $user = $this->get('users_handler')->findOneByUsername($username);
@@ -15,6 +21,10 @@ class UserController extends Controller
         return $user;
     }
 
+    /**
+     * @Rest\View(serializerGroups={"me"})
+     * @return [type] [description]
+     */
     public function getMeAction() {
        $this->forwardIfNotAuthenticated();
        return $this->getUser();

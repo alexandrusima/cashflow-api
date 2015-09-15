@@ -8,6 +8,8 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\VirtualProperty;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\AccessorOrder;
 
 /**
  * ApiKey
@@ -16,6 +18,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  * @ORM\Entity(repositoryClass="AccessBundle\Entity\ApiKeyRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ExclusionPolicy("all")
+ * @AccessorOrder("alphabetical")
  */
 class ApiKey
 {
@@ -30,8 +33,7 @@ class ApiKey
     
     /**
      *
-     * @ORM\ManyToOne(targetEntity="\ApiBundle\Entity\User", inversedBy="apiKeys")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="\ApiBundle\Entity\User", inversedBy="apikeys")
      */
     private $user;
 
@@ -40,6 +42,8 @@ class ApiKey
      *
      * @ORM\Column(name="apiKey", type="string", length=100)
      * @Expose
+     * @Accessor(getter="getApiKey",setter="setApiKey")
+     * @Groups({"me"})
      */
     private $apiKey;
 
@@ -47,6 +51,7 @@ class ApiKey
      * @var boolean
      *
      * @ORM\Column(name="isActive", type="boolean")
+     * @Expose
      */
     private $isActive;
 
@@ -54,6 +59,8 @@ class ApiKey
      * @var \DateTime
      *
      * @ORM\Column(name="expiresAt", type="datetime")
+     * @Expose
+     * @Groups({"me"})
      */
     private $expiresAt;
 
@@ -77,7 +84,6 @@ class ApiKey
     public function setApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
-
         return $this;
     }
 
@@ -88,7 +94,7 @@ class ApiKey
      */
     public function getApiKey()
     {
-        return $this->apiKey;
+        return implode('-',str_split($this->apiKey, 4));
     }
 
     /**
@@ -155,10 +161,10 @@ class ApiKey
     /**
      * Set user
      *
-     * @param \AccessBundle\Entity\User $user
+     * @param \ApiBundle\Entity\User $user
      * @return ApiKey
      */
-    public function setUser(\AccessBundle\Entity\User $user = null)
+    public function setUser(\ApiBundle\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -168,7 +174,7 @@ class ApiKey
     /**
      * Get user
      *
-     * @return \AccessBundle\Entity\User 
+     * @return \ApiBundle\Entity\User 
      */
     public function getUser()
     {
