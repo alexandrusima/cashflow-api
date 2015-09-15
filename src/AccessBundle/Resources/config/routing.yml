@@ -1,8 +1,7 @@
 login:
-    path:     /login.{_format}
-    defaults: { _controller: AccessBundle:Auth:login, _format: json }
+    path:     /login
+    defaults: { _controller: AccessBundle:Auth:login}
     requirements:
-        _format: json|xml
         _method: POST
 
 register:

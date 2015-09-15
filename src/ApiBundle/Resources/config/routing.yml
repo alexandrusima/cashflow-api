@@ -1,12 +1,10 @@
-users_me:
-    pattern:  /me.{_format}
-    defaults: { _controller: ApiBundle:Default:getMe, _format: json }
+me:
+    pattern:  /me
+    defaults: { _controller: ApiBundle:User:getMe }
     requirements:
         _method: GET
-users_get:
-    pattern:  /{username}.{_format}
-    defaults: { _controller: ApiBundle:Default:get, _format: json }
+get:
+    pattern:  /{username}
+    defaults: { _controller: ApiBundle:User:get }
     requirements:
         _method: GET
-
-    

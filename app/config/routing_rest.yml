@@ -1,11 +1,11 @@
-app_bundle : 
-  type : rest
-  resource: "@ApiBundle/Resources/config/routing.yml"
-  prefix: /users
-  name_prefix: api_v1_
-
-access_bundle : 
-  type : rest
+access_bundle:
+  type: rest
   resource: "@AccessBundle/Resources/config/routing.yml"
   prefix: /auth
+  name_prefix: api_v1_
+
+api_bundle:
+  type: rest
+  resource: "@ApiBundle/Resources/config/routing.yml"
+  prefix: /users
   name_prefix: api_v1_

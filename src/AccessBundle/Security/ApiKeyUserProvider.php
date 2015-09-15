@@ -24,7 +24,7 @@ class ApiKeyUserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        return $this->usersHandler->getByUsername($username);
+    	return $this->usersHandler->getByUsername($username);
     }
 
     public function refreshUser(UserInterface $user)
