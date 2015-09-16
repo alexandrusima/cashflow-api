@@ -48,6 +48,15 @@ class ApiKey
     private $apiKey;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isActive", type="boolean")
+     * @Expose
+     * @Groups({"me", "auth_getApiKey"})
+     */
+    private $isActive;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="expiresAt", type="datetime")
@@ -55,7 +64,15 @@ class ApiKey
      * @Groups({"me", "auth_getApiKey"})
      */
     private $expiresAt;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", columnDefinition="enum('desktop', 'mobile')"))
+     * @Expose
+     * @Groups({"me", "auth_getApiKey"})
+     */
+    private $type;
 
     /**
      * Get id
@@ -150,5 +167,51 @@ class ApiKey
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     * @return ApiKey
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return ApiKey
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

@@ -19,9 +19,10 @@ class AuthController extends Controller
     public function getApiKeyAction()
     {
         $user = new User();
+        $req = $this->get('request');
         
-        $username = $this->get('request')->request->get('username');
-        $password = $this->get('request')->request->get('password');
+        $username = $req->request->get('username');
+        $password = $req->request->get('password');
         
         $user->setUsername($username);
         $user->setPassword($password);
@@ -53,8 +54,12 @@ class AuthController extends Controller
 
         // @TODO extinde apiKey astfel incat sa fie un api key per device 
         // desktop or mobile ( la mobile pot fi mai multe )
+        
         $apiKeys = $user->getApiKeys();
-        return $apiKeys->current();
+
+        return $apiKeys->filter(function($entry) {
+            return $entry->getType() == 'desktop' and $entry->getIsActive();
+        });
         
     }
 

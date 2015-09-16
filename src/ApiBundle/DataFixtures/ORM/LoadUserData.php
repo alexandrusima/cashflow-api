@@ -43,6 +43,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         
         $apiKey = new ApiKey();
 
+        // testing reasons
         $key = 'ffe7-ee11-58ef-255e-b337-6ce2-7c24-544b-e315-56a6';
 
         // $key = sha1( uniqid() . md5( rand() . uniqid() ) );
@@ -50,6 +51,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         
         $apiKey->setApiKey($key);
         $apiKey->setIsActive(true);
+        $apiKey->setType('desktop');
         
         $userAdmin->addApiKey($apiKey);
         $manager->persist($userAdmin);

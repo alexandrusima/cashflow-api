@@ -8,6 +8,8 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\VirtualProperty;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\AccessorOrder;
 
 /**
  * ApiKey
@@ -16,6 +18,7 @@ use JMS\Serializer\Annotation\VirtualProperty;
  * @ORM\Entity(repositoryClass="AccessBundle\Entity\ApiKeyRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ExclusionPolicy("all")
+ * @AccessorOrder("alphabetical")
  */
 class ApiKey
 {
@@ -29,17 +32,8 @@ class ApiKey
     private $id;
     
     /**
-     * @var integer
      *
-     * @ORM\Column(name="userId", type="integer")
-     */
-    private $userId;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\ManyToOne(targetEntity="ApiBundle\Entity\User", inversedBy="apiKeys")
-     * @ORM\JoinColumn(name="userId", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="\ApiBundle\Entity\User", inversedBy="apikeys")
      */
     private $user;
 
@@ -48,6 +42,8 @@ class ApiKey
      *
      * @ORM\Column(name="apiKey", type="string", length=100)
      * @Expose
+     * @Accessor(getter="getApiKey",setter="setApiKey")
+     * @Groups({"me", "auth_getApiKey"})
      */
     private $apiKey;
 
@@ -55,6 +51,8 @@ class ApiKey
      * @var boolean
      *
      * @ORM\Column(name="isActive", type="boolean")
+     * @Expose
+     * @Groups({"me", "auth_getApiKey"})
      */
     private $isActive;
 
@@ -62,9 +60,19 @@ class ApiKey
      * @var \DateTime
      *
      * @ORM\Column(name="expiresAt", type="datetime")
+     * @Expose
+     * @Groups({"me", "auth_getApiKey"})
      */
     private $expiresAt;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", columnDefinition="enum('desktop', 'mobile')"))
+     * @Expose
+     * @Groups({"me", "auth_getApiKey"})
+     */
+    private $type;
 
     /**
      * Get id
@@ -77,29 +85,6 @@ class ApiKey
     }
 
     /**
-     * Set userId
-     *
-     * @param integer $userId
-     * @return ApiKey
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer 
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
      * Set apiKey
      *
      * @param string $apiKey
@@ -108,7 +93,6 @@ class ApiKey
     public function setApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
-
         return $this;
     }
 
@@ -120,29 +104,6 @@ class ApiKey
     public function getApiKey()
     {
         return $this->apiKey;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return ApiKey
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
     }
 
     /**
@@ -180,6 +141,31 @@ class ApiKey
      * @ORM\PrePersist
      */
     public function setIsActiveValue() {
-        $this->isActive = false;
+        if(!isset($this->isActive)) {
+            $this->isActive = false;
+        }
+    }
+
+    /**
+     * Set user
+     *
+     * @param \ApiBundle\Entity\User $user
+     * @return ApiKey
+     */
+    public function setUser(\ApiBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \ApiBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
