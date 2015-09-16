@@ -4,7 +4,8 @@ me:
     requirements:
         _method: GET
 get:
-    pattern:  /{username}
+    pattern:  /{id}
     defaults: { _controller: ApiBundle:User:get }
     requirements:
+        id: "\d+"
         _method: GET

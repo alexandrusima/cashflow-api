@@ -9,12 +9,12 @@ class UserController extends Controller
 {
     /**
      * @Rest\View(serializerGroups={"list"})
-     * @param  [type] $username [description]
+     * @param  interger $id [description]
      * @return [type]           [description]
      */
-    public function getAction($username)
+    public function getAction($id)
     {
-        $user = $this->get('users_handler')->findOneByUsername($username);
+        $user = $this->get('users_handler')->findOneById($id);
         if(!is_object($user)){
           throw $this->createNotFoundException();
         }

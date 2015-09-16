@@ -32,7 +32,7 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $userAdmin = new User();
         $userAdmin->setFirstName('Alex');
         $userAdmin->setLastName('Sima');
-        $userAdmin->setUsername('admin');
+        $userAdmin->setUsername('admin@localhost.com');
         
         $userAdmin->setSalt(md5(uniqid()));
 
@@ -42,8 +42,11 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $apiKeyHandler = $this->container->get('apiKey_handler');
         
         $apiKey = new ApiKey();
-        $key = sha1( uniqid() . md5( rand() . uniqid() ) );
-        $key = implode('-', str_split($key, 4));
+
+        $key = 'ffe7-ee11-58ef-255e-b337-6ce2-7c24-544b-e315-56a6';
+
+        // $key = sha1( uniqid() . md5( rand() . uniqid() ) );
+        // $key = implode('-', str_split($key, 4));
         
         $apiKey->setApiKey($key);
         $apiKey->setIsActive(true);

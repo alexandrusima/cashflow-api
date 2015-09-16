@@ -5,7 +5,7 @@ namespace AccessBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use ApiBundle\Interfaces\ApiKeyHandlerInterface;
 use AccessBundle\Entity\ApiKey;
-use AccessBundle\Entity\User;
+use ApiBundle\Entity\User;
 
 
 /**

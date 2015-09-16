@@ -46,7 +46,7 @@ class User implements UserInterface, EncoderAwareInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Expose
-     * @Groups({"me"})
+     * @Groups({"me", "list"})
      */
     private $id;
 
@@ -319,7 +319,7 @@ class User implements UserInterface, EncoderAwareInterface
      * @Groups({"me"})
      */
     public function getRoles() {
-        return array('ROLE_USER', 'FREE_USER');
+        return array('ROLE_USER');
     }
 
     public function setSalt($salt) {
