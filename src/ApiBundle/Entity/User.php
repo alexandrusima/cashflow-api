@@ -12,6 +12,7 @@ use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\VirtualProperty;
 use JMS\Serializer\Annotation\AccessorOrder;
+use JMS\Serializer\Annotation\Accessor;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
@@ -67,6 +68,7 @@ class User implements UserInterface, EncoderAwareInterface
      * @ORM\Column(name="lastName", type="string", length=100)
      * @Expose
      * @Groups({"me", "list"})
+     * @Accessor(getter="getLastName",setter="setLastName")
      */
     private $lastName;
 
@@ -172,7 +174,7 @@ class User implements UserInterface, EncoderAwareInterface
      */
     public function getLastName()
     {
-        return $this->lastName;
+        return mb_strtoupper($this->lastName);
     }
 
     /**

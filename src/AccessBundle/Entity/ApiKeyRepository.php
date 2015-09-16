@@ -22,7 +22,7 @@ class ApiKeyRepository extends EntityRepository implements ApiKeyHandlerInterfac
             /**
             * @var \AccessBundle\Entity\ApiKey
             */
-            $result = $this->findOneBy(array('apiKey'   => $apiKey, 'isActive' => true));
+            $result = $this->findOneBy(array('apiKey'   => $apiKey));
             
             if($result instanceof ApiKey and $result->getUser() instanceof User) {
                 $username = $result->getUser()->getUsername();

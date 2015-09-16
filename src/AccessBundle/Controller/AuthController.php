@@ -44,6 +44,12 @@ class AuthController extends Controller
         if($encodedPasword != $user->getPassword()) {
             throw new BadCredentialsException("Wrong password in request.");
         }
+        else {
+           $user->setLastLogin(new \DateTime());
+           $em = $this->get('doctrine.orm.entity_manager');
+           $em->persist($user);
+           $em->flush();
+        }
 
         // @TODO extinde apiKey astfel incat sa fie un api key per device 
         // desktop or mobile ( la mobile pot fi mai multe )
