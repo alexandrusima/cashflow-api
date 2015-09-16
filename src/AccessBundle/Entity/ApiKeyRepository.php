@@ -4,6 +4,10 @@ namespace AccessBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use ApiBundle\Interfaces\ApiKeyHandlerInterface;
+use AccessBundle\Entity\ApiKey;
+use AccessBundle\Entity\User;
+
+
 /**
  * ApiKeyRepository
  *
@@ -13,7 +17,19 @@ use ApiBundle\Interfaces\ApiKeyHandlerInterface;
 class ApiKeyRepository extends EntityRepository implements ApiKeyHandlerInterface
 {
     public function getUsernameFromApiKey($apiKey) {
-        $result = $this->findOneBy(array('apiKey' => $apiKey, 'isActive'=> false));
-        var_dump($result); exit;
+        $username = null;
+        try {
+            /**
+            * @var \AccessBundle\Entity\ApiKey
+            */
+            $result = $this->findOneBy(array('apiKey'   => $apiKey, 'isActive' => true));
+            
+            if($result instanceof ApiKey and $result->getUser() instanceof User) {
+                $username = $result->getUser()->getUsername();
+            }
+        } catch (Exception $e) {
+            $username = null;
+        }
+       return $username;
     }
 }

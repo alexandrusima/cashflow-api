@@ -9,12 +9,14 @@ parameters:
 
 
 services:
+    
     users_handler:
         class: %user_repository%
         factory_service: doctrine.orm.default_entity_manager
         factory_method: getRepository
         arguments:
             - %user_entity%
+            
     apiKey_handler:
         class: %apiKey_repository%
         factory_service: doctrine.orm.default_entity_manager

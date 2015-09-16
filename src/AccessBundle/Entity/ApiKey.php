@@ -155,7 +155,9 @@ class ApiKey
      * @ORM\PrePersist
      */
     public function setIsActiveValue() {
-        $this->isActive = false;
+        if(!isset($this->isActive)) {
+            $this->isActive = false;
+        }
     }
 
     /**

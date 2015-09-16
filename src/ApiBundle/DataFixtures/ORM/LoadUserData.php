@@ -40,12 +40,17 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $userAdmin->setPassword($encoder->encodePassword('test', $userAdmin->getSalt()));
         
         $apiKeyHandler = $this->container->get('apiKey_handler');
+        
         $apiKey = new ApiKey();
-        $apiKey->setApiKey(sha1( uniqid() . md5( rand() . uniqid() ) ));
+        $key = sha1( uniqid() . md5( rand() . uniqid() ) );
+        $key = implode('-', str_split($key, 4));
+        
+        $apiKey->setApiKey($key);
+        $apiKey->setIsActive(true);
         
         $userAdmin->addApiKey($apiKey);
         $manager->persist($userAdmin);
-        $manager->persist($apiKey);
+        
         $manager->flush();
     }
     

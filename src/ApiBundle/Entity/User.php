@@ -110,7 +110,7 @@ class User implements UserInterface, EncoderAwareInterface
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_active", type="boolean", nullable=true)
+     * @ORM\Column(name="isActive", type="boolean", nullable=true)
      */
     private $isActive;
 	
