@@ -5,10 +5,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+
 use ApiBundle\Interfaces\UsersHandlerInterface;
 use ApiBundle\Interfaces\ApiKeyHandlerInterface;
-
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class ApiKeyUserProvider implements UserProviderInterface
 {
@@ -34,10 +33,7 @@ class ApiKeyUserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $user = $this->usersHandler->getByUsername($username);
-        if(!$user->isActive()) {
-            throw new BadCredentialsException();
-        }
-    	return $user;
+        return $user;
     }
 
     public function refreshUser(UserInterface $user)

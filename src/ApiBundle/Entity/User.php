@@ -107,13 +107,6 @@ class User implements UserInterface, EncoderAwareInterface
      */
     private $password;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="isActive", type="boolean", nullable=true)
-     */
-    private $isActive;
-	
 	/**
      * @var string
      *
@@ -292,29 +285,6 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return User
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-    
-    /**
      * this method returns null.
      * this signals that symfony should use the default 
      * encoder 
@@ -385,16 +355,6 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * This method is called before
-     * saving entity in the database
-     * @ORM\PrePersist
-     */
-    public function setIsActiveValue()
-    {
-    	$this->isActive = false;
-    	return $this;
-    }
- 	/**
      * This method is called before
      * saving entity in the database
      * @ORM\PreUpdate
