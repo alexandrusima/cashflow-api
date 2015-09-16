@@ -29,7 +29,7 @@ security:
                 authenticator: apikey_authenticator
             provider: api_key_user_provider
         users_authentication:
-            pattern: ^/auth/(login|logout|register|forgot)/
+            pattern: ^/auth/*
             security: false
     
     # password encoders

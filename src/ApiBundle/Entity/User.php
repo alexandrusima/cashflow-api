@@ -5,6 +5,8 @@ namespace ApiBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Groups;
@@ -74,6 +76,8 @@ class User implements UserInterface, EncoderAwareInterface
      * @ORM\Column(name="username", type="string", length=50)
      * @Expose
      * @Groups({"me", "list"})
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $username;
 
@@ -104,6 +108,7 @@ class User implements UserInterface, EncoderAwareInterface
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $password;
 

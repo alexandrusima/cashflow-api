@@ -43,24 +43,16 @@ class ApiKey
      * @ORM\Column(name="apiKey", type="string", length=100)
      * @Expose
      * @Accessor(getter="getApiKey",setter="setApiKey")
-     * @Groups({"me"})
+     * @Groups({"me", "auth_getApiKey"})
      */
     private $apiKey;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="isActive", type="boolean")
-     * @Expose
-     */
-    private $isActive;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="expiresAt", type="datetime")
      * @Expose
-     * @Groups({"me"})
+     * @Groups({"me", "auth_getApiKey"})
      */
     private $expiresAt;
 
@@ -95,29 +87,6 @@ class ApiKey
     public function getApiKey()
     {
         return $this->apiKey;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return ApiKey
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
     }
 
     /**

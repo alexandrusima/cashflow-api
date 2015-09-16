@@ -3,14 +3,53 @@
 namespace AccessBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use ApiBundle\Entity\User;
+use FOS\RestBundle\Controller\Annotations as Rest;
 
+/**
+ * @TODO:
+ */
 class AuthController extends Controller
 {
-    public function loginAction()
+    /**
+     * @Rest\View(serializerGroups={"auth_getApiKey"})
+     * @return [type] [description]
+     */
+    public function getApiKeyAction()
     {
+        $user = new User();
+        
+        $username = $this->get('request')->request->get('username');
+        $password = $this->get('request')->request->get('password');
+        
+        $user->setUsername($username);
+        $user->setPassword($password);
 
-        var_dump($this->get('request')->request->all());
-        exit;
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user);
+
+        if (count($errors) > 0) {
+            return array('validation_error' => $errors);
+        }
+
+
+        $user = $this->get('users_handler')->getByUsername($user->getUsername());
+
+        // check the passowrd.
+        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+        $encodedPasword = $encoder->encodePassword($password, $user->getSalt());
+
+        if($encodedPasword != $user->getPassword()) {
+            throw new BadCredentialsException("Wrong password in request.");
+        }
+
+        // @TODO extinde apiKey astfel incat sa fie un api key per device 
+        // desktop or mobile ( la mobile pot fi mai multe )
+        $apiKeys = $user->getApiKeys();
+        return $apiKeys->current();
+        
     }
 
     public function registerAction()

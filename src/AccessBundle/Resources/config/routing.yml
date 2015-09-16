@@ -1,6 +1,6 @@
 login:
-    path:     /login
-    defaults: { _controller: AccessBundle:Auth:login}
+    path:     /get-apikey
+    defaults: { _controller: AccessBundle:Auth:getApiKey}
     requirements:
         _method: POST
 
