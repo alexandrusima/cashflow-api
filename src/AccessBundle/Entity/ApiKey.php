@@ -94,7 +94,7 @@ class ApiKey
      */
     public function getApiKey()
     {
-        return implode('-',str_split($this->apiKey, 4));
+        return $this->apiKey;
     }
 
     /**

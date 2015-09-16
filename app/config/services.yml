@@ -28,7 +28,7 @@ services:
 
     api_key_user_provider:
         class: AccessBundle\Security\ApiKeyUserProvider
-        arguments: ["@users_handler"]
+        arguments: ["@users_handler", "@apiKey_handler"]
 
 
 #    service_name:

@@ -16,9 +16,4 @@ class UserRepository extends EntityRepository implements UsersHandlerInterface
     public function getByUsername($username) {
     	return $this->findOneBy(array('username' => $username));
     }
-
-    public function getUsernameFromApiKey($apiKey) {
-        //@TODO change this
-        return 'admin';
-    }
 }

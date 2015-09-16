@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use ApiBundle\Interfaces\UsersHandlerInterface;
+use ApiBundle\Interfaces\ApiKeyHandlerInterface;
 
 class ApiKeyUserProvider implements UserProviderInterface
 {
@@ -14,12 +15,18 @@ class ApiKeyUserProvider implements UserProviderInterface
      */
     private $usersHandler;
 
-    public function __construct(UsersHandlerInterface $usersHandler) {
+    /**
+     * @var ApiKeyHandlerInterface
+     */
+    private $apiKeyHandler;
+
+    public function __construct(UsersHandlerInterface $usersHandler, ApiKeyHandlerInterface $apiKeyHandler) {
         $this->usersHandler = $usersHandler;
+        $this->apiKeyHandler = $apiKeyHandler;
     }
     public function getUsernameForApiKey($apiKey)
     {
-        return $this->usersHandler->getUsernameFromApiKey($apiKey);
+        return $this->apiKeyHandler->getUsernameFromApiKey($apiKey);
     }
 
     public function loadUserByUsername($username)
