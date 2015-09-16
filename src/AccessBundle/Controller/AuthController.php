@@ -53,8 +53,7 @@ class AuthController extends Controller
         }
 
         // @TODO extinde apiKey astfel incat sa fie un api key per device 
-        // desktop or mobile ( la mobile pot fi mai multe )
-        
+        // desktop or mobile
         $apiKeys = $user->getApiKeys();
 
         return $apiKeys->filter(function($entry) {
