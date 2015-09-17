@@ -54,6 +54,16 @@ class LoadUserData implements FixtureInterface, ContainerAwareInterface
         $apiKey->setType('desktop');
         
         $userAdmin->addApiKey($apiKey);
+        
+        $apiKey = clone($apiKey);
+        
+        $key = sha1( uniqid() . md5( rand() . uniqid() ) );
+        $key = implode('-', str_split($key, 4));
+        $apiKey->setApiKey($key);
+        $apiKey->setType('mobile');
+        
+        $userAdmin->addApiKey($apiKey);
+        
         $manager->persist($userAdmin);
         
         $manager->flush();

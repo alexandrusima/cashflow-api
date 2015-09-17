@@ -59,8 +59,8 @@ doctrine:
         #   2. Uncomment database_path in parameters.yml.dist
         #   3. Uncomment next line:
         #     path:     "%database_path%"
-    mapping_types:
-        enum: string
+        mapping_types:
+            enum: string
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
@@ -94,9 +94,29 @@ fos_rest:
         default_engine: twig
     routing_loader:
         default_format: json
+
 jms_serializer:
     metadata:
         directories:
             FOSUB:
                 namespace_prefix: "FOS\\UserBundle"
                 path: "%kernel.root_dir%/serializer/FOSUserBundle"
+
+mobile_detect:
+    redirect:
+        full:
+            is_enabled: false            # default false
+        mobile:
+            is_enabled: false            # default false
+        tablet:
+            is_enabled: false            # default false
+        detect_tablet_as_mobile: false   # default false
+    switch_device_view:
+        save_referer_path: false        # default true
+                                        # true  redirectUrl = http://site.com/current/path?currentQuery=string
+                                        # false redirectUrl = http://site.com
+    service:
+        mobile_detector: mobile_detect.mobile_detector.default
+    device_view_class: SunCat\MobileDetectBundle\Helper\DeviceView
+    request_listener_class: SunCat\MobileDetectBundle\EventListener\RequestListener
+    extension_class: SunCat\MobileDetectBundle\Twig\Extension\MobileDetectExtension

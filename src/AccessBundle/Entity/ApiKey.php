@@ -51,8 +51,6 @@ class ApiKey
      * @var boolean
      *
      * @ORM\Column(name="isActive", type="boolean")
-     * @Expose
-     * @Groups({"me", "auth_getApiKey"})
      */
     private $isActive;
 
@@ -69,8 +67,6 @@ class ApiKey
      * @var string
      *
      * @ORM\Column(name="type", type="string", columnDefinition="enum('desktop', 'mobile')"))
-     * @Expose
-     * @Groups({"me", "auth_getApiKey"})
      */
     private $type;
 

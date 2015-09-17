@@ -78,7 +78,6 @@ class User implements UserInterface, EncoderAwareInterface
      * @ORM\Column(name="username", type="string", length=50)
      * @Expose
      * @Groups({"me", "list"})
-     * @Assert\NotBlank()
      * @Assert\Email()
      */
     private $username;

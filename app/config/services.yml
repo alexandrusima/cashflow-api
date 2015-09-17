@@ -12,7 +12,7 @@ parameters:
    sf_base_form: Symfony\Component\Form\Form
    user_form: ApiBundle\Form\UserType
 services:
-    #entity services
+    # entity services
     users_handler:
         class: %user_repository%
         factory_service: doctrine.orm.default_entity_manager
@@ -42,7 +42,7 @@ services:
         class: %sf_base_form%
         arguments:
             - apibundle_user                   # name of the form
-            - @api.form.type.user               # alias of the form type
+            - @api.form.type.user              # alias of the form type
             - null                             # data to bind, this is where your entity could go if you have that defined as a service
             - { validation_groups: [Default] } # validation groups
  
