@@ -11,3 +11,7 @@
 /composer.phar
 /vendor/
 /web/bundles/
+.brackets.json
+.buildpath
+*todo
+all
