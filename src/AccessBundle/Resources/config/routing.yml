@@ -1,13 +1,15 @@
 login:
-    path:     /get-apikey
-    defaults: { _controller: AccessBundle:Auth:getApiKey}
-    requirements:
-        _method: POST
+  path:     /get-apikey
+  defaults: { _controller: AccessBundle:Auth:getApiKey}
+  requirements:
+    _method: POST
 
 register:
-    path:     /register
-    defaults: { _controller: AccessBundle:Auth:register }
+  path:     /register
+  defaults: { _controller: AccessBundle:Auth:register }
+    #_method: PUT
+
 
 forgot:
-    path:     /forgot
-    defaults: { _controller: AccessBundle:Auth:forgot }
+  path:     /forgot
+  defaults: { _controller: AccessBundle:Auth:forgot }
