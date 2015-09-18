@@ -9,7 +9,7 @@ class UserController extends Controller
 {
     /**
      * @Rest\View(serializerGroups={"list"})
-     * @param  interger $id [description]
+     * @param  \interger $id [description]
      * @return [type]           [description]
      */
     public function getAction($id)
@@ -30,13 +30,13 @@ class UserController extends Controller
        return $this->getUser();
     }
 
-    /**
+   /**
     * Shortcut to throw a AccessDeniedException($message) if the user is not authenticated
     * @param String $message The message to display (default:'warn.user.notAuthenticated')
     */
     protected function forwardIfNotAuthenticated($message='warn.user.notAuthenticated'){
         if (!is_object($this->getUser())) {
-            throw new AccessDeniedException($message);
+            throw $this->createAccessDeniedException($message);
         }
     }
 }
