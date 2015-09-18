@@ -13,6 +13,7 @@
 /web/bundles/
 .brackets.json
 .buildpath
+/.idea
 *todo
 all
 Project description.js
