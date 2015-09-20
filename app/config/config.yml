@@ -108,18 +108,9 @@ jms_serializer:
                 path: "%kernel.root_dir%/serializer/FOSUserBundle"
 
 mobile_detect:
-    redirect:
-        full:
-            is_enabled: false            # default false
-        mobile:
-            is_enabled: false            # default false
-        tablet:
-            is_enabled: false            # default false
-        detect_tablet_as_mobile: false   # default false
     switch_device_view:
         save_referer_path: false        # default true
-                                        # true  redirectUrl = http://site.com/current/path?currentQuery=string
-                                        # false redirectUrl = http://site.com
+
     service:
         mobile_detector: mobile_detect.mobile_detector.default
     device_view_class: SunCat\MobileDetectBundle\Helper\DeviceView
