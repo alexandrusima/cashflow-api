@@ -2,21 +2,11 @@
 
 namespace ApiBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Symfony\Component\Validator\Constraints as Assert;
-
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
-use JMS\Serializer\Annotation\Groups;
-use JMS\Serializer\Annotation\VirtualProperty;
-use JMS\Serializer\Annotation\AccessorOrder;
-use JMS\Serializer\Annotation\Accessor;
-
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
-use Symfony\Component\Security\Core\Encoder\BasePasswordEncoder;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -26,7 +16,12 @@ use Symfony\Component\Security\Core\Encoder\BasePasswordEncoder;
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ExclusionPolicy("all")
- * @AccessorOrder("custom", custom = {"id","first_name", "last_name", "full_name", "roles", "apikeys"})
+ * @UniqueEntity(
+ *  fields={"username"},
+ *  message="Username is already used.",
+ *  repositoryMethod="getByUsername",
+ *  groups={"auth_register"}
+ * )
  */
 class User implements UserInterface, EncoderAwareInterface
 {
@@ -36,13 +31,7 @@ class User implements UserInterface, EncoderAwareInterface
      * @Groups({"me"})
      */
     protected $apikeys;
-    
-    public function __construct() {
-        $this->apikeys = new ArrayCollection();
-    }
-    
-    
-	/**
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -52,16 +41,15 @@ class User implements UserInterface, EncoderAwareInterface
      * @Groups({"me", "list"})
      */
     private $id;
-
     /**
      * @var string
-     * 
+     *
      * @ORM\Column(name="firstName", type="string", length=100)
      * @Expose
      * @Groups({"me", "list"})
+     * @Assert\NotBlank(groups={"auth_register"})
      */
     private $firstName;
-
     /**
      * @var string
      *
@@ -69,19 +57,18 @@ class User implements UserInterface, EncoderAwareInterface
      * @Expose
      * @Groups({"me", "list"})
      * @Accessor(getter="getLastName",setter="setLastName")
+     * @Assert\NotBlank(groups={"auth_register"})
      */
     private $lastName;
-
     /**
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=50)
      * @Expose
      * @Groups({"me", "list"})
-     * @Assert\Email()
+     * @Assert\Email(groups={"auth_getApiKey", "auth_register"})
      */
     private $username;
-
     /**
      * @var \DateTime
      * @ORM\Column(name="lastLogin", type="datetimetz", nullable=true)
@@ -89,7 +76,6 @@ class User implements UserInterface, EncoderAwareInterface
      * @Groups({"me"})
      */
     private $lastLogin;
-
     /**
      * @var \DateTime
      *
@@ -97,28 +83,36 @@ class User implements UserInterface, EncoderAwareInterface
      * @Expose
      */
     private $createdAt;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
-
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Regex(
+     *  pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,10}$/",
+     *  match=true,
+     *  message="Minimum 8 and Maximum 10 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character",
+     * groups={"auth_register"}
+     * )
      */
     private $password;
-
 	/**
      * @var string
      *
      * @ORM\Column(name="salt", type="string", length=255, nullable=true)
      */
     private $salt;
+
+    public function __construct()
+    {
+        $this->apikeys = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -131,72 +125,13 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * Set firstName
+     * Get lastLogin
      *
-     * @param string $firstName
-     * @return User
+     * @return \DateTime
      */
-    public function setFirstName($firstName)
+    public function getLastLogin()
     {
-        $this->firstName = $firstName;
-
-        return $this;
-    }
-
-    /**
-     * Get firstName
-     *
-     * @return string 
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-
-    /**
-     * Set lastName
-     *
-     * @param string $lastName
-     * @return User
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    /**
-     * Get lastName
-     *
-     * @return string 
-     */
-    public function getLastName()
-    {
-        return mb_strtoupper($this->lastName);
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $username
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string 
-     */
-    public function getUsername()
-    {
-        return $this->username;
+        return $this->lastLogin;
     }
 
     /**
@@ -213,13 +148,13 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * Get lastLogin
+     * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getLastLogin()
+    public function getCreatedAt()
     {
-        return $this->lastLogin;
+        return $this->createdAt;
     }
 
     /**
@@ -236,13 +171,13 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * Get createdAt
+     * Get updatedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getUpdatedAt()
     {
-        return $this->createdAt;
+        return $this->updatedAt;
     }
 
     /**
@@ -259,13 +194,13 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * Get updatedAt
+     * Get password
      *
-     * @return \DateTime 
+     * @return string
      */
-    public function getUpdatedAt()
+    public function getPassword()
     {
-        return $this->updatedAt;
+        return $this->password;
     }
 
     /**
@@ -276,46 +211,105 @@ class User implements UserInterface, EncoderAwareInterface
      */
     public function setPassword($password)
     {
-    	$this->password = $password;
+        $this->password = $password;
         return $this;
     }
 
     /**
-     * Get password
-     *
-     * @return string 
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
      * this method returns null.
-     * this signals that symfony should use the default 
-     * encoder 
+     * this signals that symfony should use the default
+     * encoder
      * @return null
      */
-    public function getEncoderName() 
+    public function getEncoderName()
     {
         return null;
     }
-    
+
     /**
      * Get the formatted name to display (NAME Firstname or username)
-     * 
-     * @param $separator: the separator between name and firstname (default: ' ')
+     *
+     * @param $separator : the separator between name and firstname (default: ' ')
      * @return String
      * @VirtualProperty
      * @Groups({"me", "list"})
      */
-    public function getFullName($separator = ' '){
-        if($this->getLastName()!=null && $this->getFirstName()!=null){
-            return ucfirst(strtolower($this->getFirstName())).$separator.strtoupper($this->getLastName());
-        }
-        else{
+    public function getFullName($separator = ' ')
+    {
+        if ($this->getLastName() != null && $this->getFirstName() != null) {
+            return ucfirst(strtolower($this->getFirstName())) . $separator . strtoupper($this->getLastName());
+        } else {
             return $this->getUsername();
         }
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return mb_strtoupper($this->lastName);
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+    
+    /**
+     * Set username
+     *
+     * @param string $username
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -328,16 +322,18 @@ class User implements UserInterface, EncoderAwareInterface
         return array('ROLE_USER');
     }
 
-    public function setSalt($salt) {
-    	$this->salt = $salt;
-    	return $this;
-    }
     /**
      * Method inherited from UserInterface
      * @return [type] [description]
      */
-    public function getSalt() {
-		return $this->salt;
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    public function setSalt($salt) {
+    	$this->salt = $salt;
+    	return $this;
     }
 
     /**
@@ -345,7 +341,9 @@ class User implements UserInterface, EncoderAwareInterface
      * @return [type] [description]
      */
     public function eraseCredentials()
-    {}
+    {
+        $this->setPassword(null);
+    }
     
     /**
      * This method is called before

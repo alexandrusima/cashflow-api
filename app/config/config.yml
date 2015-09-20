@@ -81,6 +81,8 @@ fos_rest:
     format_listener:
         rules:
             - { path: ^/, priorities: [ json, xml ], fallback_format: json, prefer_extension: true }
+    service:
+        exception_handler:    fos_rest.view.exception_wrapper_handler
     view:
         view_response_listener: 'force'
         formats:
@@ -94,7 +96,10 @@ fos_rest:
         default_engine: twig
     routing_loader:
         default_format: json
-
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
 jms_serializer:
     metadata:
         directories:

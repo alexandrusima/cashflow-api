@@ -2,14 +2,14 @@
 
 namespace ApiBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class UserController extends Controller
 {
     /**
      * @Rest\View(serializerGroups={"list"})
-     * @param  \interger $id [description]
+     * @param  interger $id [description]
      * @return [type]           [description]
      */
     public function getAction($id)

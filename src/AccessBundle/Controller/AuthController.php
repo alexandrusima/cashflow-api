@@ -2,10 +2,11 @@
 
 namespace AccessBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use ApiBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+
 
 class AuthController extends Controller
 {
@@ -21,7 +22,7 @@ class AuthController extends Controller
         
         $username = $req->request->get('username');
         $password = $req->request->get('password');
-        
+
         $user->setUsername($username);
         $user->setPassword($password);
 
@@ -50,10 +51,10 @@ class AuthController extends Controller
            $em->persist($user);
            $em->flush();
         }
-        
+
         // @NOTE Refactor geting back the apiKey based on type and device_id
         $apiKeys = $user->getApiKeys();
-        
+
         $mobileDetector = $this->get('mobile_detect.mobile_detector');
         $isDesktop = !$mobileDetector->isMobile() and !$mobileDetector->isTablet();
 
@@ -68,12 +69,35 @@ class AuthController extends Controller
 
     public function registerAction()
     {
-        var_dump($this->get('request')->request->all());
-        exit;
+        // @NOTE refactor entity validation
+        $reqParametersBag = $this->get('request')->request;
+
+        $username = $reqParametersBag->get('username');
+        $password = $reqParametersBag->get('password');
+        $firstName = $reqParametersBag->get('first_name');
+        $lastName = $reqParametersBag->get('last_name');
+
+        $user = new User();
+        $user->setUsername($username);
+        $user->setFirstName($firstName);
+        $user->setLastName($lastName);
+        $user->setPassword($password);
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user, null, array('auth_register'));
+
+        if (count($errors) > 0) {
+            return array('validation_error' => $errors);
+        }
+
+        // @NOTE refactor password encoding
+        $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+
     }
 
     public function forgotAction()
     {
     }
+
 
 }
