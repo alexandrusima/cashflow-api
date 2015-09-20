@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Encoder\EncoderAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
@@ -15,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="ApiBundle\Entity\UserRepository")
  * @ORM\HasLifecycleCallbacks()
- * @ExclusionPolicy("all")
+ * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(
  *  fields={"username"},
  *  message="Username is already used.",
@@ -27,68 +29,81 @@ class User implements UserInterface, EncoderAwareInterface
 {
      /**
      * @ORM\OneToMany(targetEntity="AccessBundle\Entity\ApiKey", mappedBy="user", cascade={"remove", "persist"})
-     * @Expose
-     * @Groups({"me"})
+     * @JMS\Expose
+     * @JMS\Groups({"me"})
      */
     protected $apikeys;
-    /**
+
+    public function __construct() {
+        $this->apikeys = new ArrayCollection();
+    }
+
+   	/**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Expose
-     * @Groups({"me", "list"})
+     * @JMS\Expose
+     * @JMS\Groups({"me", "list"})
      */
     private $id;
+
     /**
      * @var string
      *
      * @ORM\Column(name="firstName", type="string", length=100)
-     * @Expose
-     * @Groups({"me", "list"})
+     * @JMS\Expose
+     * @JMS\Groups({"me", "list"})
      * @Assert\NotBlank(groups={"auth_register"})
      */
     private $firstName;
+
     /**
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=100)
-     * @Expose
-     * @Groups({"me", "list"})
-     * @Accessor(getter="getLastName",setter="setLastName")
+     * @JMS\Expose
+     * @JMS\Groups({"me", "list"})
+     * @JMS\Accessor(getter="getLastName",setter="setLastName")
      * @Assert\NotBlank(groups={"auth_register"})
      */
     private $lastName;
+
     /**
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=50)
-     * @Expose
-     * @Groups({"me", "list"})
+     * @JMS\Expose
+     * @JMS\Groups({"me", "list"})
      * @Assert\Email(groups={"auth_getApiKey", "auth_register"})
      */
     private $username;
+
     /**
      * @var \DateTime
      * @ORM\Column(name="lastLogin", type="datetimetz", nullable=true)
-     * @Expose
-     * @Groups({"me"})
+     * @JMS\Expose
+     * @JMS\Groups({"me"})
      */
     private $lastLogin;
+
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
-     * @Expose
+     * @JMS\Expose
+     * @JMS\Groups({"me"})
      */
     private $createdAt;
+
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
     /**
      * @var string
      *
@@ -102,17 +117,13 @@ class User implements UserInterface, EncoderAwareInterface
      * )
      */
     private $password;
+
 	/**
      * @var string
      *
      * @ORM\Column(name="salt", type="string", length=255, nullable=true)
      */
     private $salt;
-
-    public function __construct()
-    {
-        $this->apikeys = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -122,158 +133,6 @@ class User implements UserInterface, EncoderAwareInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get lastLogin
-     *
-     * @return \DateTime
-     */
-    public function getLastLogin()
-    {
-        return $this->lastLogin;
-    }
-
-    /**
-     * Set lastLogin
-     *
-     * @param \DateTime $lastLogin
-     * @return User
-     */
-    public function setLastLogin($lastLogin)
-    {
-        $this->lastLogin = $lastLogin;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return User
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     * @return User
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * this method returns null.
-     * this signals that symfony should use the default
-     * encoder
-     * @return null
-     */
-    public function getEncoderName()
-    {
-        return null;
-    }
-
-    /**
-     * Get the formatted name to display (NAME Firstname or username)
-     *
-     * @param $separator : the separator between name and firstname (default: ' ')
-     * @return String
-     * @VirtualProperty
-     * @Groups({"me", "list"})
-     */
-    public function getFullName($separator = ' ')
-    {
-        if ($this->getLastName() != null && $this->getFirstName() != null) {
-            return ucfirst(strtolower($this->getFirstName())) . $separator . strtoupper($this->getLastName());
-        } else {
-            return $this->getUsername();
-        }
-    }
-
-    /**
-     * Get lastName
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return mb_strtoupper($this->lastName);
-    }
-
-    /**
-     * Set lastName
-     *
-     * @param string $lastName
-     * @return User
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    /**
-     * Get firstName
-     *
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
     }
 
     /**
@@ -290,15 +149,38 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * Get username
+     * Get firstName
      *
      * @return string
      */
-    public function getUsername()
+    public function getFirstName()
     {
-        return $this->username;
+        return $this->firstName;
     }
-    
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return User
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return mb_strtoupper($this->lastName);
+    }
+
     /**
      * Set username
      *
@@ -313,27 +195,154 @@ class User implements UserInterface, EncoderAwareInterface
     }
 
     /**
-     * Method inherited from UserInterface
-     * @return [type] [description]
-     * @VirtualProperty
-     * @Groups({"me"})
+     * Get username
+     *
+     * @return string
      */
-    public function getRoles() {
-        return array('ROLE_USER');
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set lastLogin
+     *
+     * @param \DateTime $lastLogin
+     * @return User
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    /**
+     * Get lastLogin
+     *
+     * @return \DateTime
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return User
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     * @return User
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+    	$this->password = $password;
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * this method returns null.
+     * this signals that symfony should use the default
+     * encoder
+     * @return null
+     */
+    public function getEncoderName()
+    {
+        return null;
+    }
+    
+    /**
+     * Get the formatted name to display (NAME Firstname or username)
+     *
+     * @param $separator: the separator between name and firstname (default: ' ')
+     * @return String
+     * @JMS\VirtualProperty
+     * @@JMS\Groups({"me", "list"})
+     */
+    public function getFullName($separator = ' '){
+        if($this->getLastName()!=null && $this->getFirstName()!=null){
+            return ucfirst(strtolower($this->getFirstName())).$separator.strtoupper($this->getLastName());
+        }
+        else{
+            return $this->getUsername();
+        }
     }
 
     /**
      * Method inherited from UserInterface
      * @return [type] [description]
+     * @@JMS\VirtualProperty
+     * @@JMS\Groups({"me"})
      */
-    public function getSalt()
-    {
-        return $this->salt;
+    public function getRoles() {
+        return array('ROLE_USER');
     }
 
     public function setSalt($salt) {
     	$this->salt = $salt;
     	return $this;
+    }
+    /**
+     * Method inherited from UserInterface
+     * @return [type] [description]
+     */
+    public function getSalt() {
+		return $this->salt;
     }
 
     /**
