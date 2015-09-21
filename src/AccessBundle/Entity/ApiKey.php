@@ -210,4 +210,17 @@ class ApiKey
     {
         return $this->type;
     }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setApiKeyValue()
+    {
+        $key = sha1( uniqid() . md5( rand() . uniqid() ) );
+        $key = implode('-', str_split($key, 4));
+        if(empty($this->apiKey)) {
+            $this->setApiKey($key);
+        }
+        return $this;
+    }
 }

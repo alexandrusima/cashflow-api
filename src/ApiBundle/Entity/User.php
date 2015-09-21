@@ -411,4 +411,13 @@ class User implements UserInterface, EncoderAwareInterface
     {
         return $this->apikeys;
     }
+
+    /**
+     * this method will generate a new password
+     * salt
+     */
+    public function generateSalt() {
+        $newSalt = md5(uniqid());
+        return $newSalt;
+    }
 }

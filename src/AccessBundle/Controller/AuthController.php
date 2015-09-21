@@ -3,7 +3,10 @@
 namespace AccessBundle\Controller;
 
 use ApiBundle\Entity\User;
+use AccessBundle\Entity\ApiKey;
+
 use FOS\RestBundle\Controller\Annotations as Rest;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
@@ -92,6 +95,34 @@ class AuthController extends Controller
 
         // @NOTE refactor password encoding
         $encoder = $this->get('security.encoder_factory')->getEncoder($user);
+
+        // @NOTE refactor getting new salt
+        $salt = $user->generateSalt();
+        $encodedPassword = $encoder->encodePassword($user->getPassword(), $salt);
+
+        $user->setSalt($salt);
+        $user->setPassword($encodedPassword);
+
+        // @NOTE refactor apikeys for newly created user
+        $apiKey = new ApiKey();
+        $apiKey->setIsActive(true);
+        $apiKey->setType('desktop');
+        $user->addApiKey($apiKey);
+
+
+        // we have previously create a mobile apiKey
+        // we need to create a desktop api key
+        $apiKey = new ApiKey();
+        $apiKey->setIsActive(false);
+        $apiKey->setType('mobile');
+        $user->addApiKey($apiKey);
+
+        // @NOTE refactor entity saving for new user
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->flush();
+
+        return $user;
 
     }
 
