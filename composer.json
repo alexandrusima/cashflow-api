@@ -22,7 +22,8 @@
         "friendsofsymfony/rest-bundle": "^1.7",
         "jms/serializer-bundle": "*",
         "nelmio/api-doc-bundle": "^2.9",
-        "suncat/mobile-detect-bundle": "*"
+        "suncat/mobile-detect-bundle": "*",
+        "sfk/email-template-bundle": "^1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

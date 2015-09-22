@@ -70,6 +70,10 @@ class AuthController extends Controller
         
     }
 
+    /**
+     * @TODO send confirmation email
+     * @return User
+     */
     public function registerAction()
     {
         // @NOTE refactor entity validation
@@ -134,6 +138,12 @@ class AuthController extends Controller
 
     public function forgotAction()
     {
+        // find user by email
+        // generate email with link to forgot password form
+    }
+
+    public function changePasswordAction() {
+
     }
 
 
