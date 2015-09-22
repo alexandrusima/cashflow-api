@@ -117,6 +117,12 @@ class AuthController extends Controller
         $apiKey->setType('mobile');
         $user->addApiKey($apiKey);
 
+        
+        $apiKey = new ApiKey();
+        $apiKey->setIsActive(false);
+        $apiKey->setType('tablet');
+        $user->addApiKey($apiKey);
+
         // @NOTE refactor entity saving for new user
         $em = $this->get('doctrine.orm.entity_manager');
         $em->persist($user);

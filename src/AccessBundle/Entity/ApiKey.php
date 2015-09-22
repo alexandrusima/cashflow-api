@@ -66,7 +66,7 @@ class ApiKey
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", columnDefinition="enum('desktop', 'mobile')"))
+     * @ORM\Column(name="type", type="string", columnDefinition="enum('desktop', 'mobile', 'tablet')"))
      */
     private $type;
 
