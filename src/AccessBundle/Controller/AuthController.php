@@ -134,16 +134,7 @@ class AuthController extends Controller
 
         // @note refactor email building and sending
 
-        /**
-         * mailer configuration
-         *   mailer_transport: smtp
-        mailer_host: smtp.gmail.com
-        mailer_user: asima463@gmail.com
-        mailer_password: 23R3t3l3crist4line
-        mailer_encription: ssl
-        mailer_auth_mode: login
-        mailer_delivery_address: noreply@cashflow.com
-         */
+      
         $formData = array(
             'email' => 'alexandru.sima20@gmail.com',
             'first_name' => $user->getFirstName(),

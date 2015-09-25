@@ -1,14 +1,10 @@
-{% extends 'SfkEmailTemplateBundle::email.html.twig' %}
-
-{% block from -%}
-    noreply@cashflow.com
-{%- endblock %}
+{% extends ':Emails:baseEmail.html.twig' %}
 
 {% block subject -%}
     Thanks for registering {{ first_name }}!
 {%- endblock %}
 
-{% block body -%}
+{% block innerBody %}
     Hello {{ first_name }},
     <br />
     <br />
