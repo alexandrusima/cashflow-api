@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "617131fd3ef31c09de869b91caca6f32",
-    "content-hash": "e92580d91d2bae93c325cdf1efc4dc12",
+    "hash": "76ae8bb9f6c7e36b6c55bc5647352dc4",
+    "content-hash": "acc976ebb2b8b12d1eea44da2d185e05",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1915,6 +1915,50 @@
             ],
             "description": "A security checker for your composer.lock",
             "time": "2015-08-11 12:11:25"
+        },
+        {
+            "name": "sfk/email-template-bundle",
+            "version": "v1.0.1",
+            "target-dir": "Sfk/EmailTemplateBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mathewpeterson/EmailTemplateBundle.git",
+                "reference": "3fd4c00c3522f54787ef33781a5a857d06153a46"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mathewpeterson/EmailTemplateBundle/zipball/3fd4c00c3522f54787ef33781a5a857d06153a46",
+                "reference": "3fd4c00c3522f54787ef33781a5a857d06153a46",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "~2.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Sfk\\EmailTemplateBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oleg Khussainov",
+                    "email": "oleg@hireoleg.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This bundle helps you to deal with emails in your Symfony2 app. Render emails from Twig or Database, it's easy!.",
+            "homepage": "http://github.com/getme/EmailTemplateBundle",
+            "keywords": [
+                "doctrine email",
+                "emails integration",
+                "twig email"
+            ],
+            "time": "2014-04-16 04:57:24"
         },
         {
             "name": "suncat/mobile-detect-bundle",

@@ -1,0 +1,25 @@
+{% extends 'SfkEmailTemplateBundle::email.html.twig' %}
+
+{% block from -%}
+    noreply@cashflow.com
+{%- endblock %}
+
+{% block subject -%}
+    Thanks for registering {{ first_name }}!
+{%- endblock %}
+
+{% block body -%}
+    Hello {{ first_name }},
+    <br />
+    <br />
+    Thank you for registering at our website! below your account details:
+    <br />
+    <br />
+    First Name: {{ first_name }}<br />
+    Last Name: {{ last_name }}<br />
+    Email: {{ email }}<br />
+    Password: {{ password }}<br />
+
+    <br />
+    Thanks
+{%- endblock %}

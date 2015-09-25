@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new SunCat\MobileDetectBundle\MobileDetectBundle(),
+            new Sfk\EmailTemplateBundle\SfkEmailTemplateBundle(),
 
             new ConfigBundle\ConfigBundle(),
             new ApiBundle\ApiBundle(),

@@ -110,9 +110,9 @@ class User implements UserInterface, EncoderAwareInterface
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
      * @Assert\Regex(
-     *  pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,10}$/",
+     *  pattern="/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{4,20}$/",
      *  match=true,
-     *  message="Minimum 8 and Maximum 10 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character",
+     *  message="Minimum 4 and Maximum 20 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet, 1 Number and 1 Special Character",
      * groups={"auth_register"}
      * )
      */
