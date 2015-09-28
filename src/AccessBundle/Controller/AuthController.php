@@ -10,7 +10,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
-
+// @TODO: check what to do with api doc
 class AuthController extends Controller
 {
     /**
@@ -22,14 +22,13 @@ class AuthController extends Controller
         // @NOTE refactor the entity validation
         $user = new User();
         $req = $this->get('request');
-        
+
         $username = $req->request->get('username');
         $password = $req->request->get('password');
 
         $user->setUsername($username);
         $user->setPassword($password);
 
-        
         $validator = $this->get('validator');
         $errors = $validator->validate($user);
 
@@ -131,7 +130,7 @@ class AuthController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         $em->persist($user);
         $em->flush();
-        /*
+
         // @note refactor email building and sending
         $formData = array(
             'email' => $user->getUsername(),
@@ -152,14 +151,17 @@ class AuthController extends Controller
             ->setTo($formData['email']);
         // send email
         $this->get('mailer')->send($message);
-        */
+
         return $user;
 
     }
 
     public function forgotAction()
     {
-        // find user by email
+        $email = $this->get('request')->request->get('email');
+        $user = $this->get('users_handler')->getByUsername($email);
+        if(!$user) {
+        }
         // generate email with link to forgot password form
     }
 
