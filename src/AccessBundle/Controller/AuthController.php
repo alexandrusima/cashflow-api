@@ -131,12 +131,10 @@ class AuthController extends Controller
         $em = $this->get('doctrine.orm.entity_manager');
         $em->persist($user);
         $em->flush();
-
+        /*
         // @note refactor email building and sending
-
-      
         $formData = array(
-            'email' => 'alexandru.sima20@gmail.com',
+            'email' => $user->getUsername(),
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName(),
             'password' => $password
@@ -145,7 +143,8 @@ class AuthController extends Controller
         $template = $this->get('sfk_email_template.loader')
             ->load('AccessBundle:Emails:user_registered.html.twig', $formData);
 
-
+        // @TODO check the email with images. I think 
+        // that the DNS isn't showing any images because it is a local resource.
         $message = \Swift_Message::newInstance()
             ->setSubject($template->getSubject())
             ->setFrom($template->getFrom())
@@ -153,6 +152,7 @@ class AuthController extends Controller
             ->setTo($formData['email']);
         // send email
         $this->get('mailer')->send($message);
+        */
         return $user;
 
     }
