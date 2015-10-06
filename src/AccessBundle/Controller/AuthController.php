@@ -161,8 +161,9 @@ class AuthController extends Controller
         $email = $this->get('request')->request->get('email');
         $user = $this->get('users_handler')->getByUsername($email);
         if(!$user) {
+            throw $this->createNotFoundException($this->get('translator')->trans('err.user.notFound'));
         }
-        // generate email with link to forgot password form
+
     }
 
     public function changePasswordAction() {

@@ -1,4 +1,4 @@
-{% extends ':Emails:baseEmail.html.twig' %}
+{% extends ':Emails:baseCampaignEmail.html.twig' %}
 
 {% block subject -%}
     Thanks for registering {{ first_name }}!
@@ -14,8 +14,6 @@
     First Name: {{ first_name }}<br />
     Last Name: {{ last_name }}<br />
     Email: {{ email }}<br />
-    Password: {{ password }}<br />
-
     <br />
     Thanks
 {%- endblock %}
