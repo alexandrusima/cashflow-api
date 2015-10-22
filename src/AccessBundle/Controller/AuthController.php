@@ -156,6 +156,15 @@ class AuthController extends Controller
 
     }
 
+    public function showForgotMailAction() {
+        $templateData = array(
+            'email' => 'alexandru.sima20@gmail.com'
+        );
+        $template = $this->render('AccessBundle:Emails:user_forgot.html.twig', $templateData);
+        // echo $template; exit;
+        return $template;
+    }
+
     public function forgotAction()
     {
         $email = $this->get('request')->request->get('email');
@@ -163,7 +172,22 @@ class AuthController extends Controller
         if(!$user) {
             throw $this->createNotFoundException($this->get('translator')->trans('err.user.notFound'));
         }
+        $emailData =  array(
+            'email' => $user->getUsername(),
+            'fullName' => $user->getFullName(),
+        );
+        $template = $this->get('sfk_email_template.loader')
+            ->load('AccessBundle:Emails:user_forgot.html.twig', $formData);
 
+        // @TODO check the email with images. I think 
+        // that the DNS isn't showing any images because it is a local resource.
+        $message = \Swift_Message::newInstance()
+            ->setSubject($template->getSubject())
+            ->setFrom($template->getFrom())
+            ->setBody($template->getBody(), 'text/html')
+            ->setTo($emailData['email']);
+        // send email
+        $this->get('mailer')->send($message);
     }
 
     public function changePasswordAction() {

@@ -21,3 +21,4 @@ Project description
 UPGRADE*.*
 README.md
 /.settings
+/nbproject/private/

@@ -14,3 +14,7 @@ register:
 forgot:
   path:     /forgot
   defaults: { _controller: AccessBundle:Auth:forgot }
+
+forgotMail:
+  path:     /forgot_mail
+  defaults: { _controller: AccessBundle:Auth:showForgotMail }
