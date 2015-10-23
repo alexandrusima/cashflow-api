@@ -3,15 +3,47 @@
 {% block subject -%}
     test
 {%- endblock %}
-
 {% block innerBody %}
-    Hello ,
-    <br />
-    <br />
-    Thank you for registering at our website! below your account details:
-    <br />
-    <br />
-    Email: {{ email }}<br />
-    <br />
-    Thanks
+<style type="text/css">
+    .email-content td p {
+        font-size:14px;
+        line-height:24px;
+    }
+</style>
+    <table class="email-content">
+        <tr>
+            <td>
+                <p style="text-indent: 20px">Dear {{ fullName }},</p>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    A request has been made to modify your password using this email address. 
+                    <br/>
+                    Please use the below link in order to update your password. <br/>
+                    <a href="http://google.com" target="_blank">http://google.com</a>
+                </p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <p>Thank you for using our application.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                <p>
+                    Best regards,<br />
+                    CashFlow Team
+                </p>
+            </td>
+        </tr>
+    </table>
 {%- endblock %}

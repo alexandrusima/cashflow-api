@@ -158,10 +158,10 @@ class AuthController extends Controller
 
     public function showForgotMailAction() {
         $templateData = array(
+            'fullName' => 'Alexandru Sima',
             'email' => 'alexandru.sima20@gmail.com'
         );
         $template = $this->render('AccessBundle:Emails:user_forgot.html.twig', $templateData);
-        // echo $template; exit;
         return $template;
     }
 
