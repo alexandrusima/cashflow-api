@@ -420,4 +420,10 @@ class User implements UserInterface, EncoderAwareInterface
         $newSalt = md5(uniqid());
         return $newSalt;
     }
+
+    public function getApiKeyByType($type) {
+        return array_filter($this->apikeys, function ($item, $key) use ($type) {
+            return $type === $item->getType();
+        });
+    }
 }

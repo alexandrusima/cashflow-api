@@ -16,20 +16,21 @@ use ApiBundle\Entity\User;
  */
 class ApiKeyRepository extends EntityRepository implements ApiKeyHandlerInterface
 {
-    public function getUsernameFromApiKey($apiKey) {
+    public function getUsernameFromApiKey($apiKey)
+    {
         $username = null;
         try {
             /**
-            * @var \AccessBundle\Entity\ApiKey
-            */
-            $result = $this->findOneBy(array('apiKey'   => $apiKey));
-            
-            if($result instanceof ApiKey and $result->getUser() instanceof User) {
+             * @var \AccessBundle\Entity\ApiKey
+             */
+            $result = $this->findOneBy(array('apiKey' => $apiKey));
+
+            if ($result instanceof ApiKey and $result->getUser() instanceof User) {
                 $username = $result->getUser()->getUsername();
             }
         } catch (Exception $e) {
             $username = null;
         }
-       return $username;
+        return $username;
     }
 }

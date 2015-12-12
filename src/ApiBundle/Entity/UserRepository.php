@@ -13,7 +13,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository implements UsersHandlerInterface
 {
-    public function getByUsername($username) {
+    public function getByUsername($username)
+    {
     	return $this->findOneBy(array('username' => $username));
     }
 }

@@ -70,7 +70,6 @@ class AuthController extends Controller
     }
 
     /**
-     * @TODO send confirmation email
      * @return User
      */
     public function registerAction()
@@ -156,28 +155,44 @@ class AuthController extends Controller
 
     }
 
-    public function showForgotMailAction() {
-        $templateData = array(
-            'fullName' => 'Alexandru Sima',
-            'email' => 'alexandru.sima20@gmail.com'
-        );
-        $template = $this->render('AccessBundle:Emails:user_forgot.html.twig', $templateData);
-        return $template;
-    }
-
     public function forgotAction()
     {
         $email = $this->get('request')->request->get('email');
+        /**
+         * @var User
+         */
         $user = $this->get('users_handler')->getByUsername($email);
         if(!$user) {
-            throw $this->createNotFoundException($this->get('translator')->trans('err.user.notFound'));
+            throw $this->createNotFoundException('err.user.notFound');
         }
+
+        if(count($user->getApiKeyByType('password'))) {
+            throw $this->createAccessDeniedException('err.token.passwordTokenPresent');
+        }
+
+        /**
+         * @var ApiKey
+         */
+        $apiKey = new ApiKey();
+        $apiKey->setType('password');
+        $apiKey->setIsActive(true);
+        $user->addApiKey($apiKey);
+
+        $em = $this->get('doctrine.orm.entity_manager');
+        $em->persist($user);
+        $em->flush();
+        // create password forgot token
+            // set token expires to 2 days
+        // deactivate the user for login
+
         $emailData =  array(
             'email' => $user->getUsername(),
             'fullName' => $user->getFullName(),
+            'changePasswordLink' => 'https://cashflow.dev/change_password?t=' . $apiKey->getApiKey()
         );
+
         $template = $this->get('sfk_email_template.loader')
-            ->load('AccessBundle:Emails:user_forgot.html.twig', $formData);
+            ->load('AccessBundle:Emails:user_forgot.html.twig', $emailData);
 
         // @TODO check the email with images. I think 
         // that the DNS isn't showing any images because it is a local resource.
@@ -187,12 +202,37 @@ class AuthController extends Controller
             ->setBody($template->getBody(), 'text/html')
             ->setTo($emailData['email']);
         // send email
-        $this->get('mailer')->send($message);
+//        $this->get('mailer')->send($message);
     }
 
-    public function changePasswordAction() {
+    /**
+     * @TODO: move paramters validation
+     * outside the actions.
+     *
+     * Validation of paramters should be done with the
+     * default routing.
+     *
+     */
+    public function changePasswordAction()
+    {
+        $changePasswordToken = $this->get('request')->get('changePasswordToken', false);
+        $email = $this->get('request')->get('email', false);
+        if(!$email or !$changePasswordToken) {
+            throw $this->createNotFoundException('err.param.notFound');
+        }
+
+        $user  = $this->get('users_handler')->getByUsername($email);
+
+        if(!$user) {
+            throw $this->createNotFoundException('err.user.notFound');
+        }
+
+        $oApiHandler = $this->get('apikey_handler');
+        if(!$oApiHandler->validate($changePasswordToken)) {
+            throw $this->createAccessDeniedException('err.token.invalid');
+        }
+
 
     }
-
 
 }

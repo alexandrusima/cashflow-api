@@ -66,7 +66,7 @@ class ApiKey
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", columnDefinition="enum('desktop', 'mobile', 'tablet')"))
+     * @ORM\Column(name="type", type="string", columnDefinition="enum('desktop', 'mobile', 'tablet', 'password')"))
      */
     private $type;
 
@@ -130,7 +130,12 @@ class ApiKey
      */
     public function setExpiresAtValue() {
     	$dateTime = new \DateTime();
-    	$dateTime->modify('+1 month');
+        if($this->getType() != 'password') {
+            $dateTime->modify('+1 month');
+        }
+        else {
+            $dateTime->modify('+2 day');
+        }
     	$this->expiresAt = $dateTime;
     }
      /**

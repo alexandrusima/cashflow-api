@@ -2,10 +2,19 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <!-- general error messages -->
             <trans-unit id="1">
+                <source>err.param.notFound</source>
+                <target>Parameter not found</target>
+            </trans-unit>
+            <!-- /general error messages -->
+
+            <!-- specific messages via namespace -->
+            <trans-unit id="2">
                 <source>err.user.notFound</source>
                 <target>Email not found in the system</target>
             </trans-unit>
+            <!-- /specific messages via namespace -->
         </body>
     </file>
 </xliff>

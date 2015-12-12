@@ -10,7 +10,6 @@ register:
   requirements:
     _method: PUT
 
-
 forgot:
   path:     /forgot
   defaults: { _controller: AccessBundle:Auth:forgot }
@@ -18,3 +17,9 @@ forgot:
 forgotMail:
   path:     /forgot_mail
   defaults: { _controller: AccessBundle:Auth:showForgotMail }
+
+change:
+  path:     /change_password
+  defaults: { _controller: AccessBundle:Auth:changePassword }
+  requirements:
+    _method: POST
